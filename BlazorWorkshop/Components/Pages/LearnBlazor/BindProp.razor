@@ -1,48 +1,51 @@
 ﻿@page "/learnBlazor/bindprop"
+<div class="row">
+    <div class="col-6 border p-3">
+        <h3 class="text-primary">Product - Playground</h3>
+        <hr />
+        IsAcive : <input type="checkbox" @bind="@product.IsActive" />@* This will have checked by default *@
+        @*IsAcive : <input type="checkbox" @bind-value="@product.IsActive" checked="@(product.IsActive ? "checked" : null)" /> *@
+        <br />
+        Input Price : <input type="number" @bind="@product.Price" @bind:event="oninput"></input>
+        <br />
+        Product Properties:
+        <select @bind=selectedProp>
+            @foreach (var prop in product.ProductProperties)
+            {
+                <option value="@prop.Key">@prop.Key</option>
+            }
+        </select>
+    </div>
+    <div class="col-6 border p-3">
+        <h3 class="text-primary">Product - Summary</h3>
+        <hr />
+        Name : @product.Name <br />
+        Is Active : @product.IsActive <br />
+        Price : @product.Price <br />
+        This Product is : @(product.IsActive ? "Active" : "InActive") <br 
+        <br />
+        Selected Property : @selectedProp
+        @if (!string.IsNullOrEmpty(selectedProp))
+        {
+            <p>Selected Value : @product.ProductProperties.FirstOrDefault(u => u.Key == selectedProp).Value</p>
+        }
+    </div>
 
-<h3>Product - Data Binding</h3>
-Name : @product.Name
-<br />
-Is Active : @product.IsActive
-<br />
-Price : @product.Price
-<br />
-This Product is : @(product.IsActive ? "Active" : "InActive")
-<br />
-IsAcive : <input type="checkbox" @bind="@product.IsActive" />@* This will have checked by default *@
-<br />
-IsAcive : <input type="checkbox" @bind-value="@product.IsActive" checked="@(product.IsActive ? "checked" : null)" />
-<br />
-Inout Price : <input type="number" @bind="@product.Price" @bind:event="oninput"></input>
-<br />
-Product Properties:
-<select @bind=selectedProp>
-    @foreach (var prop in product.ProductProperties)
-    {
-        <option value="@prop.Key">@prop.Key</option>
-    }
-</select>
-
-<br />
-Selected Property : @selectedProp 
-@if (!string.IsNullOrEmpty(selectedProp))
-{
-    <p>Selected Value : @product.ProductProperties.FirstOrDefault(u=>u.Key == selectedProp).Value</p>
-}
+</div>
 
 @code {
     private string selectedProp = "";
 
-    Models.Product product = new Models.Product 
+    Product product = new Product 
     {
         Id = 1,
         Name = "Apple", 
         IsActive = true,
         ProductProperties = new List<Models.Product_Prop>
         {
-            new Models.Product_Prop { Id=1, Key="Color", Value="Red" },
-            new Models.Product_Prop { Id=2, Key="Size", Value="Medium" },
-            new Models.Product_Prop { Id=3, Key="Flavor", Value="Sweet" }
+            new Product_Prop { Id=1, Key="Color", Value="Red" },
+            new Product_Prop { Id=2, Key="Size", Value="Medium" },
+            new Product_Prop { Id=3, Key="Flavor", Value="Sweet" }
         },
     };
 }
