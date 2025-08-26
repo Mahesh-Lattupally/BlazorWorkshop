@@ -14,14 +14,35 @@ IsAcive : <input type="checkbox" @bind="@product.IsActive" />@* This will have c
 IsAcive : <input type="checkbox" @bind-value="@product.IsActive" checked="@(product.IsActive ? "checked" : null)" />
 <br />
 Inout Price : <input type="number" @bind="@product.Price" @bind:event="oninput"></input>
+<br />
+Product Properties:
+<select @bind=selectedProp>
+    @foreach (var prop in product.ProductProperties)
+    {
+        <option value="@prop.Key">@prop.Key</option>
+    }
+</select>
 
-
+<br />
+Selected Property : @selectedProp 
+@if (!string.IsNullOrEmpty(selectedProp))
+{
+    <p>Selected Value : @product.ProductProperties.FirstOrDefault(u=>u.Key == selectedProp).Value</p>
+}
 
 @code {
+    private string selectedProp = "";
+
     Models.Product product = new Models.Product 
     {
         Id = 1,
         Name = "Apple", 
-        IsActive = true
+        IsActive = true,
+        ProductProperties = new List<Models.Product_Prop>
+        {
+            new Models.Product_Prop { Id=1, Key="Color", Value="Red" },
+            new Models.Product_Prop { Id=2, Key="Size", Value="Medium" },
+            new Models.Product_Prop { Id=3, Key="Flavor", Value="Sweet" }
+        },
     };
 }
